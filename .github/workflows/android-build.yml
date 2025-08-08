@@ -1,0 +1,41 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar o ambiente Java (JDK)
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Configurar o Gradle Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Compilar o APK com a Ação do Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: '8.4'
+        arguments: :app:assembleDebug
+
+    - name: Carregar o APK como um Artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: thiaguinho-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
