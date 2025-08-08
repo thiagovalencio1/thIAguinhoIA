@@ -1,6 +1,11 @@
-# Gradle JVM arguments
+# Configurações de performance para o Gradle
+# Atribui mais memória ao processo de compilação para evitar problemas em projetos maiores.
 org.gradle.jvmargs=-Xmx2048m
 
-# Enable AndroidX and Jetifier
+# Ativação das bibliotecas AndroidX
+# Esta é a linha exata que o nosso erro de compilação está a pedir.
 android.useAndroidX=true
+
+# Ativa o Jetifier, uma ferramenta de compatibilidade para bibliotecas mais antigas.
+# É uma boa prática tê-lo ativado em conjunto com o AndroidX.
 android.enableJetifier=true
